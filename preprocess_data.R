@@ -4,6 +4,7 @@ library(data.tree)
 
 # load some data
 dat <- read_excel('data/data.xlsx', range='All Samples!A2:Y1683')
+dat <- dat %>% rename("volume"="volume (mm^3)")
 
 # mildly tricky: make the tree corresponding to the region ontology;
 # since the rows are in sorted order of parents -> children, we can do this 
