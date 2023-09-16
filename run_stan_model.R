@@ -25,5 +25,16 @@ iter <- 2000
 thin <- 1
 stan_seed <- 12345
 
-fit <- stan(file = 'poisson_prob_pca.stan', data=stan_dat, pars=pars, iter=iter, 
-            chains=nchains, thin=thin, seed=stan_seed)
+# fit <- stan(file = 'poisson_prob_pca.stan', data=stan_dat, pars=pars, iter=iter, 
+#             chains=nchains, thin=thin, seed=stan_seed)
+
+model <- stan_model(file = 'poisson_prob_pca.stan')
+fit <- optimizing(model, data=stan_dat, seed=stan_seed)
+
+pars <- as.data.frame(fit$par) %>% rownames_to_column()
+names(pars) <- c("var", "val")
+mu <- pars %>% filter(str_detect(var, "mu"))
+
+W <- pars %>% filter(str_detect(var, "W"))
+W <- as.matrix(W$val) 
+dim(W) <- c(R, D)
