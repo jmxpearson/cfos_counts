@@ -6,6 +6,12 @@ library(data.tree)
 dat <- read_excel('data/data.xlsx', range='All Samples!A2:Y1683')
 dat <- dat %>% rename("volume"="volume (mm^3)")
 
+# read behavior
+beh <- read_excel('data/behavior.xlsx') %>% 
+  rename("behavior"="Behavior Variable") %>%
+  pivot_longer(starts_with("Morris_"), names_to="subject", values_to="value") %>%
+  pivot_wider(names_from="behavior", values_from="value")
+
 # mildly tricky: make the tree corresponding to the region ontology;
 # since the rows are in sorted order of parents -> children, we can do this 
 # straightforwardly with a loop
@@ -33,7 +39,7 @@ groups <- read_excel('data/data.xlsx', range='All Samples!G1:Y2') %>%
   mutate(group = gsub("\\.{3}[[:digit:]]+", "", group))
 
 # add group info
-dat <- dat %>% left_join(groups)
+dat <- dat %>% left_join(groups) %>% left_join(beh)
 
 # write out
 dat %>% write_delim('data/clean_dat.csv', delim=',')
