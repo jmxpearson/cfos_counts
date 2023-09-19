@@ -59,3 +59,4 @@ beta <- fit_summary %>% filter(str_detect(variable, "beta")) %>% select(mean) %>
 dim(beta) <- c(P, R)
 beta <- t(beta)
 
+save.image('data/model_output.rdata')
