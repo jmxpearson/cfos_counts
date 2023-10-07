@@ -37,12 +37,12 @@ options(mc.cores = parallel::detectCores())
 # run some stan
 nchains <- 4
 stan_dat <- list(N=N, R=R, D=D, P=P, count=count, volume=volume, beh=beh)
-pars <- c('mu', 'beta', 'alpha', 'sigma', "z", "W")
+pars <- c('mu', 'beta', 'b', 'phi', 'alpha', 'sigma', "z", "W")
 iter <- 2000
 thin <- 1
 stan_seed <- 12345
 
-file <- 'poisson_regression.stan'
+file <- 'poisson_regression_improved.stan'
 fit <- stan(file = file, data=stan_dat, pars=pars, iter=iter,
             chains=nchains, thin=thin, seed=stan_seed)
 
