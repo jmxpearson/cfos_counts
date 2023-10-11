@@ -11,7 +11,7 @@ data {
 // The parameters accepted by the model. Our model
 // accepts two parameters 'mu' and 'sigma'.
 parameters {
-  real<lower=0>] sigma;
+  vector<lower=0>[N] sigma;
   vector[R] mu;
   matrix[R, N] x;
   matrix[R, P] beta;
