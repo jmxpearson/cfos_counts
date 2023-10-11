@@ -37,22 +37,22 @@ options(mc.cores = parallel::detectCores())
 # run some stan
 nchains <- 4
 stan_dat <- list(N=N, R=R, D=D, P=P, count=count, volume=volume, beh=beh)
-pars <- c('mu', 'beta', 'b', 'phi', 'alpha', 'sigma', "z", "W")
+pars <- c('mu', 'beta', 'b', 'phi', 'sigma')
 iter <- 2000
 thin <- 1
 stan_seed <- 12345
 
-file <- 'poisson_regression_improved.stan'
+file <- 'poisson_regression_improved_nofactor.stan'
 fit <- stan(file = file, data=stan_dat, pars=pars, iter=iter,
             chains=nchains, thin=thin, seed=stan_seed)
 
 fit_summary <- as.data.frame(summary(fit)$summary) %>% 
   rownames_to_column(var='variable')
 
-W <- fit_summary %>% filter(str_detect(variable, "W")) %>% select(mean) %>%
-  as.matrix()
-dim(W) <- c(D, R)
-W <- t(W)
+# W <- fit_summary %>% filter(str_detect(variable, "W")) %>% select(mean) %>%
+#   as.matrix()
+# dim(W) <- c(D, R)
+# W <- t(W)
 
 mu <- fit_summary %>% filter(str_detect(variable, "mu")) %>% select(mean)
 beta <- fit_summary %>% filter(str_detect(variable, "beta")) %>% select(mean) %>% t()
