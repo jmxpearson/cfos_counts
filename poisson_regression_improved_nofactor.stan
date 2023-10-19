@@ -11,7 +11,7 @@ data {
 // The parameters accepted by the model. Our model
 // accepts two parameters 'mu' and 'sigma'.
 parameters {
-  vector<lower=0>[N] sigma;
+  real<lower=0> sigma;
   vector[R] mu;
   matrix[R, N] x;
   matrix[R, P] beta;
@@ -34,7 +34,7 @@ model {
   b ~ gamma(1, 1);
   phi ~ normal(0, 1); 
   sigma ~ inv_gamma(1, 1);
-  to_vector(x) ~ normal(to_vector(rep_matrix(mu, N) + beta * beh' + rep_matrix(phi, R)'), to_vector(rep_matrix(sigma, R)'));
+  to_vector(x) ~ normal(to_vector(rep_matrix(mu, N) + beta * beh' + rep_matrix(phi, R)'), sigma);
   for (s in 1:N) {
     count[s] ~ poisson((lambda[,s] + b[s]) .* volume);
   }
