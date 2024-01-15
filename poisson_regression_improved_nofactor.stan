@@ -30,7 +30,7 @@ transformed parameters {
 // and standard deviation 'sigma'.
 model {
   mu ~ normal(0, 1);
-  to_vector(beta) ~ normal(0, 1);
+  to_vector(beta) ~ double_exponential(0, 1); // normal(0, 1);
   b ~ gamma(1, 1);
   phi ~ normal(0, 1); 
   sigma ~ inv_gamma(1, 1);
